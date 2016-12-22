@@ -8,20 +8,19 @@ SPRITE_SCALING = 2
 class Choco(arcade.Sprite):
 
         def update(self):
-            self.center_y -= 10
+            self.center_y -= 8
 
         def animate(self,delta):
             self.update()
-            self.randomChoco()
 
 class MotherPlayer(arcade.Sprite):
         def update(self):
-            self.center_y -= 15
+            self.center_y -= 10
         def animate(self,delta):
             self.update()
 class Heart(arcade.Sprite):
         def update(self):
-            self.center_y -= 20
+            self.center_y -= 15
         def animate(self,delta):
             self.update()
 
@@ -47,7 +46,7 @@ class myProject(arcade.Window):
         self.motherPlayer_list = arcade.SpriteList()
         self.heart_list = arcade.SpriteList()
         #setup player
-        self.player_sprite = arcade.Sprite("chinjung.jpg")
+        self.player_sprite = arcade.Sprite("chinjung.png")
         self.player_sprite.center_x = 200
         self.player_sprite.center_y = 200
         self.all_sprites_list.append(self.player_sprite)
@@ -75,8 +74,9 @@ class myProject(arcade.Window):
         self.mother_collision()
         self.heart_collision()
         self.gameOver()
-        if random.randrange(0,100) == 1:
+        if random.randrange(0,1000) == 1:
              self.genRandomHeart()
+
     def on_mouse_motion(self,x, y, dx, dy):
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
@@ -93,7 +93,7 @@ class myProject(arcade.Window):
             if choco.bottom <= 10:
                 self.score -=1
                 self.heart -=1
-                self.genRandomChoco(1)
+                self.genRandomChoco(2)
                 choco.kill()
 
     def mother_collision(self):
@@ -102,7 +102,7 @@ class myProject(arcade.Window):
                                                  self.motherPlayer_list)
             for mother in hit_mother:
                 mother.kill()
-                self.genRandomMother(1)
+                self.genRandomMother(2)
                 self.heart -= 1
             if mother.bottom <= 10:
                 self.score += 5
@@ -129,7 +129,7 @@ class myProject(arcade.Window):
 
     def genRandomMother(self,num):
         for i in range(num):
-            motherPlayer = MotherPlayer("Ghost.png")
+            motherPlayer = MotherPlayer("mother.png")
             motherPlayer.center_x = random.randrange(20,SCREEN_WIDTH-20)
             motherPlayer.center_y = 750
             self.all_sprites_list.append(motherPlayer)
