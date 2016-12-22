@@ -6,16 +6,24 @@ SCREEN_HEIGHT = 800
 SPRITE_SCALING = 2
 
 class Choco(arcade.Sprite):
-        def reset_pos(self):
-            self.center_y = random.randrange(SCREEN_HEIGHT + 100,
-                                         SCREEN_HEIGHT + 100)
-            self.center_x = random.randrange(SCREEN_WIDTH)
+
         def update(self):
-            self.center_y -= 1
-            if self.top < 0:
-                self.reset_pos()
+            self.center_y -= 5
+
         def animate(self,delta):
             self.update()
+            self.randomChoco()
+
+        def randomChoco(self):
+            if len(choco_list)  <= 1:
+                choco = self("choco.png")
+
+                choco.center_x = random.randrange(SCREEN_WIDTH)
+                choco.center_y = 750
+
+                self.all_sprites_list.append(choco)
+                self.choco_list.append(choco)
+
 
 class myProject(arcade.Window):
     def __init__(self, width, height):
@@ -66,10 +74,19 @@ class myProject(arcade.Window):
 
             for choco in hit_list:
                 choco.kill()
-                choco.reset_pos
+
+                for i in range(1):
+                    choco = Choco("choco.png")
+
+                    choco.center_x = random.randrange(SCREEN_WIDTH)
+                    choco.center_y = 750
+
+                    self.all_sprites_list.append(choco)
+                    self.choco_list.append(choco)
                 self.score += 1
 
-            if choco.bottom > SCREEN_HEIGHT:
+            if choco.bottom <= 10:
+                self.score -=1
                 choco.kill()
 
 
