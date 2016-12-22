@@ -8,7 +8,7 @@ SPRITE_SCALING = 2
 class Choco(arcade.Sprite):
 
         def update(self):
-            self.center_y -= 5
+            self.center_y -= 10
 
         def animate(self,delta):
             self.update()
@@ -16,12 +16,12 @@ class Choco(arcade.Sprite):
 
 class MotherPlayer(arcade.Sprite):
         def update(self):
-            self.center_y -= 8
+            self.center_y -= 15
         def animate(self,delta):
             self.update()
 class Heart(arcade.Sprite):
         def update(self):
-            self.center_y -= 10
+            self.center_y -= 20
         def animate(self,delta):
             self.update()
 
@@ -37,7 +37,7 @@ class myProject(arcade.Window):
         self.endScore = 0
         self.heart = 3
         self.player_sprite = None
-
+        self.heart_list = None
         arcade.set_background_color(arcade.color.BLACK)
 
     def start_game(self):
@@ -45,7 +45,7 @@ class myProject(arcade.Window):
         self.all_sprites_list = arcade.SpriteList()
         self.choco_list = arcade.SpriteList()
         self.motherPlayer_list = arcade.SpriteList()
-
+        self.heart_list = arcade.SpriteList()
         #setup player
         self.player_sprite = arcade.Sprite("chinjung.jpg")
         self.player_sprite.center_x = 200
@@ -54,7 +54,6 @@ class myProject(arcade.Window):
         self.genRandomChoco(2)
         self.genRandomMother(1)
         self.set_mouse_visible(False)
-
 
     def on_draw(self):
         arcade.start_render()
@@ -74,7 +73,10 @@ class myProject(arcade.Window):
         self.all_sprites_list.update()
         self.choco_collision()
         self.mother_collision()
+        self.heart_collision()
         self.gameOver()
+        if random.randrange(0,100) == 1:
+             self.genRandomHeart()
     def on_mouse_motion(self,x, y, dx, dy):
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
@@ -107,7 +109,15 @@ class myProject(arcade.Window):
                 self.genRandomMother(1)
                 mother.kill()
 
-
+    def heart_collision(self):
+        for heart in self.heart_list:
+            hit_heart = arcade.check_for_collision_with_list(self.player_sprite,
+                                                 self.heart_list)
+            for heart in hit_heart:
+                heart.kill()
+                self.heart += 1
+            if heart.bottom <= 10:
+                heart.kill()
 
     def genRandomChoco(self,num):
         for i in range(num):
@@ -124,6 +134,14 @@ class myProject(arcade.Window):
             motherPlayer.center_y = 750
             self.all_sprites_list.append(motherPlayer)
             self.motherPlayer_list.append(motherPlayer)
+
+    def genRandomHeart(self):
+        for i in range(1):
+            heart = Heart("heart.png")
+            heart.center_x = random.randrange(20,SCREEN_WIDTH-20)
+            heart.center_y = 750
+            self.all_sprites_list.append(heart)
+            self.heart_list.append(heart)
 
     def gameOver(self):
         if self.heart == 0:
