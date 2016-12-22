@@ -14,15 +14,11 @@ class Choco(arcade.Sprite):
             self.update()
             self.randomChoco()
 
-        def randomChoco(self):
-            if len(choco_list)  <= 1:
-                choco = self("choco.png")
-
-                choco.center_x = random.randrange(SCREEN_WIDTH)
-                choco.center_y = 750
-
-                self.all_sprites_list.append(choco)
-                self.choco_list.append(choco)
+class Ghost(arcade.Sprite):
+        def update(self):
+            self.center_y -= 5
+        def animate(self,delta):
+            self.update()
 
 
 class myProject(arcade.Window):
@@ -74,26 +70,29 @@ class myProject(arcade.Window):
 
             for choco in hit_list:
                 choco.kill()
-
-                for i in range(1):
-                    choco = Choco("choco.png")
-
-                    choco.center_x = random.randrange(SCREEN_WIDTH)
-                    choco.center_y = 750
-
-                    self.all_sprites_list.append(choco)
-                    self.choco_list.append(choco)
+                self.genRandomChoco(1)
                 self.score += 1
 
             if choco.bottom <= 10:
                 self.score -=1
+                self.genRandomChoco(2)
                 choco.kill()
+
 
 
     def on_mouse_motion(self,x, y, dx, dy):
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
 
+    def genRandomChoco(self,num):
+        for i in range(num):
+            choco = Choco("choco.png")
+
+            choco.center_x = random.randrange(SCREEN_WIDTH)
+            choco.center_y = 750
+
+            self.all_sprites_list.append(choco)
+            self.choco_list.append(choco)
 
 
 if __name__ == '__main__':
