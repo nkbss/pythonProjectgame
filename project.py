@@ -138,9 +138,9 @@ class myProject(arcade.Window):
             self.endScore = self.score
         if self.heart <= 0:
             return True
+
     def on_draw(self):
         arcade.start_render()
-
         if self.gameOver():
             self.bg.draw()
             outputScore = "Score: {}".format(self.endScore)
