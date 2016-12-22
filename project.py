@@ -5,7 +5,14 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 SPRITE_SCALING = 3
 
-
+class Choco(arcade.Sprite):
+    def reset_pos(self):
+        self.center_y = random.randrange(SCREEN_HEIGHT + 100,
+                                         SCREEN_HEIGHT + 100)
+        self.center_x = random.randrange(SCREEN_WIDTH)
+    def update(self):
+        if self.top < 0:
+            self.reset_pos()
 
 class myProject(arcade.Window):
     def __init__(self, width, height):
