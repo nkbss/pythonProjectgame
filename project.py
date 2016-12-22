@@ -3,7 +3,6 @@ import random
 
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 800
-SPRITE_SCALING = 2
 
 class Choco(arcade.Sprite):
 
@@ -14,20 +13,27 @@ class Choco(arcade.Sprite):
             self.update()
 
 class MotherPlayer(arcade.Sprite):
+
         def update(self):
-            self.center_y -= 10
+            self.center_y -= 12
+
         def animate(self,delta):
             self.update()
+
 class Heart(arcade.Sprite):
         def update(self):
             self.center_y -= 15
+
         def animate(self,delta):
             self.update()
 
 class myProject(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
+        self.start_game()
 
+    def start_game(self):
+        #set up lists
         #set up list
         self.all_sprites_list = None
         self.choco_list = None
@@ -35,12 +41,12 @@ class myProject(arcade.Window):
         self.score = 0
         self.endScore = 0
         self.heart = 3
+        self.heartPlayer = 1
+        self.new_game = 0
         self.player_sprite = None
         self.heart_list = None
-        arcade.set_background_color(arcade.color.BLACK)
-
-    def start_game(self):
-        #setup lists
+        self.bg = arcade.Sprite("endInterface.png")
+        self.bg.set_position(250,400)
         self.all_sprites_list = arcade.SpriteList()
         self.choco_list = arcade.SpriteList()
         self.motherPlayer_list = arcade.SpriteList()
@@ -53,20 +59,19 @@ class myProject(arcade.Window):
         self.genRandomChoco(2)
         self.genRandomMother(1)
         self.set_mouse_visible(False)
+        arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
         arcade.start_render()
-        if self.gameOver():
-            arcade.set_background_color(arcade.color.BLACK)
+        if self.heartPlayer == 0:
+            self.bg.draw()
             outputScore = "Score: {}".format(self.endScore)
-            outputGameOver = "GAMEOVER"
-            arcade.draw_text(outputGameOver, 150, 600, arcade.color.BLUE, 40)
-            arcade.draw_text(outputScore, 175, 400, arcade.color.WHITE, 40)
+            arcade.draw_text(outputScore, 175, 400, arcade.color.BLUE, 40)
 
         else:
             self.all_sprites_list.draw()
             output = "Score: {}".format(self.score)
-            arcade.draw_text(output, 10, 20, arcade.color.WHITE, 20)
+            arcade.draw_text(output, 10, 750, arcade.color.WHITE, 30)
 
     def animate(self,delta_time):
         self.all_sprites_list.update()
@@ -74,7 +79,7 @@ class myProject(arcade.Window):
         self.mother_collision()
         self.heart_collision()
         self.gameOver()
-        if random.randrange(0,1000) == 1:
+        if random.randrange(0,150) == 1:
              self.genRandomHeart()
 
     def on_mouse_motion(self,x, y, dx, dy):
@@ -146,8 +151,6 @@ class myProject(arcade.Window):
     def gameOver(self):
         if self.heart == 0:
             self.endScore = self.score
-        if self.heart <= 0:
-            return True
 
 if __name__ == '__main__':
     window = myProject(SCREEN_WIDTH, SCREEN_HEIGHT)
