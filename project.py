@@ -19,10 +19,11 @@ class MotherPlayer(arcade.Sprite):
             self.center_y -= 8
         def animate(self,delta):
             self.update()
-
-
-
-
+class Heart(arcade.Sprite):
+        def update(self):
+            self.center_y -= 10
+        def animate(self,delta):
+            self.update()
 
 class myProject(arcade.Window):
     def __init__(self, width, height):
@@ -31,7 +32,10 @@ class myProject(arcade.Window):
         #set up list
         self.all_sprites_list = None
         self.choco_list = None
+        self.motherPlayer_list = None
         self.score = 0
+        self.endScore = 0
+        self.heart = 3
         self.player_sprite = None
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -54,15 +58,23 @@ class myProject(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.all_sprites_list.draw()
-        output = "Score: {}".format(self.score)
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 20)
+        if self.gameOver():
+            arcade.set_background_color(arcade.color.BLACK)
+            outputScore = "Score: {}".format(self.endScore)
+            outputGameOver = "GAMEOVER"
+            arcade.draw_text(outputGameOver, 150, 600, arcade.color.BLUE, 40)
+            arcade.draw_text(outputScore, 175, 400, arcade.color.WHITE, 40)
+
+        else:
+            self.all_sprites_list.draw()
+            output = "Score: {}".format(self.score)
+            arcade.draw_text(output, 10, 20, arcade.color.WHITE, 20)
 
     def animate(self,delta_time):
         self.all_sprites_list.update()
         self.choco_collision()
-
-
+        self.mother_collision()
+        self.gameOver()
     def on_mouse_motion(self,x, y, dx, dy):
         self.player_sprite.center_x = x
         self.player_sprite.center_y = y
@@ -78,8 +90,23 @@ class myProject(arcade.Window):
 
             if choco.bottom <= 10:
                 self.score -=1
+                self.heart -=1
                 self.genRandomChoco(1)
                 choco.kill()
+
+    def mother_collision(self):
+        for mother in self.motherPlayer_list:
+            hit_mother = arcade.check_for_collision_with_list(self.player_sprite,
+                                                 self.motherPlayer_list)
+            for mother in hit_mother:
+                mother.kill()
+                self.genRandomMother(1)
+                self.heart -= 1
+            if mother.bottom <= 10:
+                self.score += 5
+                self.genRandomMother(1)
+                mother.kill()
+
 
 
     def genRandomChoco(self,num):
@@ -98,7 +125,11 @@ class myProject(arcade.Window):
             self.all_sprites_list.append(motherPlayer)
             self.motherPlayer_list.append(motherPlayer)
 
-
+    def gameOver(self):
+        if self.heart == 0:
+            self.endScore = self.score
+        if self.heart <= 0:
+            return True
 
 if __name__ == '__main__':
     window = myProject(SCREEN_WIDTH, SCREEN_HEIGHT)
