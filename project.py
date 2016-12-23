@@ -24,11 +24,18 @@ class Heart(arcade.Sprite):
 
         def animate(self,delta):
             self.update()
+class SoundGame:
+    def BaseSound(self):
+        self.baseSound = arcade.sound.load_sound("chinjungSound.wav")
+        arcade.sound.play_sound(self.baseSound)
 
 class myProject(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height)
         self.start_game()
+        #set sound
+        self.soundGame = SoundGame()
+        self.soundGame.BaseSound()
 
     def start_game(self):
         #set value
@@ -94,6 +101,7 @@ class myProject(arcade.Window):
                 mother.kill()
                 self.genRandomMother(2)
                 self.heart -= 1
+
             if mother.bottom <= 10:
                 self.score += 5
                 self.genRandomMother(1)
@@ -106,6 +114,7 @@ class myProject(arcade.Window):
             for heart in hit_heart:
                 heart.kill()
                 self.heart += 1
+
             if heart.bottom <= 10:
                 heart.kill()
 
@@ -136,6 +145,7 @@ class myProject(arcade.Window):
     def gameOver(self):
         if self.heart == 0:
             self.endScore = self.score
+
         if self.heart <= 0:
             return True
 
@@ -145,6 +155,7 @@ class myProject(arcade.Window):
             self.bg.draw()
             outputScore = "Score: {}".format(self.endScore)
             arcade.draw_text(outputScore, 170, 300, arcade.color.BLUE, 40)
+
         else:
             self.all_sprites_list.draw()
             outputScore = "Score: {}".format(self.score)
