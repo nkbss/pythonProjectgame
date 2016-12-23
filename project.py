@@ -26,7 +26,7 @@ class Heart(arcade.Sprite):
             self.update()
 class SoundGame:
     def BaseSound(self):
-        self.baseSound = arcade.sound.load_sound("chinjungSound.wav")
+        self.baseSound = arcade.sound.load_sound("sound/chinjungSound.wav")
         arcade.sound.play_sound(self.baseSound)
 
 class myProject(arcade.Window):
@@ -51,7 +51,7 @@ class myProject(arcade.Window):
         self.new_game = 0
 
         #setBackground
-        self.bg = arcade.Sprite("endInterface.png")
+        self.bg = arcade.Sprite("images/endInterface.png")
         self.bg.set_position(250, 400)
         arcade.set_background_color(arcade.color.BLACK)
 
@@ -62,7 +62,7 @@ class myProject(arcade.Window):
         self.heart_list = arcade.SpriteList()
 
         #set up player
-        self.player_sprite = arcade.Sprite("chinjung.png")
+        self.player_sprite = arcade.Sprite("images/chinjung.png")
         self.player_sprite.center_x = 200
         self.player_sprite.center_y = 200
         self.all_sprites_list.append(self.player_sprite)
@@ -120,7 +120,7 @@ class myProject(arcade.Window):
 
     def genRandomChoco(self,num):
         for i in range(num):
-            choco = Choco("choco.png")
+            choco = Choco("images/choco.png")
             choco.center_x = random.randrange(20, SCREEN_WIDTH-20)
             choco.center_y = 750
             self.all_sprites_list.append(choco)
@@ -128,7 +128,7 @@ class myProject(arcade.Window):
 
     def genRandomMother(self,num):
         for i in range(num):
-            motherPlayer = MotherPlayer("mother.png")
+            motherPlayer = MotherPlayer("images/mother.png")
             motherPlayer.center_x = random.randrange(20, SCREEN_WIDTH-20)
             motherPlayer.center_y = 750
             self.all_sprites_list.append(motherPlayer)
@@ -136,7 +136,7 @@ class myProject(arcade.Window):
 
     def genRandomHeart(self):
         for i in range(1):
-            heart = Heart("heart.png")
+            heart = Heart("images/heart.png")
             heart.center_x = random.randrange(20,SCREEN_WIDTH-20)
             heart.center_y = 750
             self.all_sprites_list.append(heart)
